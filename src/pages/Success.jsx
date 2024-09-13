@@ -76,8 +76,7 @@ const Success = () => {
             <div className="border border-gray-300 p-8 rounded-lg bg-white shadow-md">
                 <FontAwesomeIcon icon={faCheckCircle} className="text-green-500 text-6xl mb-4"/>
                 <h1 className="text-4xl font-bold text-green-500 mb-2">Success!</h1>
-                <p className="text-lg mb-4">Your transaction has been completed successfully.<br/>You will be redirected
-                    to <a href="https://www.econorace.net/memberaccess" target="_blank">https://www.econorace.net/memberaccess</a></p>
+                <p className="text-lg mb-4">Your transaction has been completed successfully. Close this tab and check your email shortly.</p>
             </div>
         </div>
     );
