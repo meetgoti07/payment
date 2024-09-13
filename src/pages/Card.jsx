@@ -190,49 +190,28 @@ const MyFatoorahApplePay = () => {
 
                 const sessionId = response.data.SessionId;
                 const countryCode = response.data.CountryCode;
-                console.log(sessionId, countryCode);
-                // window.myFatoorahAP && !cardElementRef.current.hasChildNodes()
-                if(window.myFatoorahGP) {
-                    // const config = {
-                    //     sessionId: sessionId,
-                    //     countryCode: countryCode,
-                    //     currencyCode: "AED",
-                    //     amount: (3.67 * formatAmount(amount)),
-                    //     cardViewId: "apple-pay-card-element",
-                    //     callback: payment,
-                    //     style: {
-                    //         frameHeight: 51,
-                    //         button: {
-                    //             height: "35px",
-                    //             type: "Pay",
-                    //             borderRadius: "8px"
-                    //         }
-                    //     }
-                    // };
-                    console.log("yes");
-                    const config1 = {
+
+                if(window.myFatoorahAP && !cardElementRef.current.hasChildNodes()) {
+                    const config = {
                         sessionId: sessionId,
                         countryCode: countryCode,
                         currencyCode: "AED",
                         amount: (3.67 * formatAmount(amount)),
-                        cardViewId: "gp-card-element",
+                        cardViewId: "apple-pay-card-element",
                         callback: payment,
                         style: {
                             frameHeight: 51,
                             button: {
-                                height: "40px",
-                                text: "pay", // Accepted texts: ["book", "buy", "checkout", "donate", "order", "pay", "plain", "subscribe"]
-                                borderRadius: "8px",
-                                color: "black", // Accepted colors: ["black", "white", "default"]
-                                language: "en"
+                                height: "35px",
+                                type: "Pay",
+                                borderRadius: "8px"
                             }
                         }
                     };
+                    console.log(config);
 
-                    // window.myFatoorahAP.init(config);
-                    window.myFatoorahGP.init(config1);
-
-                    console.log(myFatoorahGP);
+                    window.myFatoorahAP.init(config);
+                    console.log(myFatoorahAP);
                 }
 
             } catch (error) {
@@ -263,13 +242,13 @@ const MyFatoorahApplePay = () => {
             console.error('Payment submission error:', error);
         });
     };
-    // <div><div id="apple-pay-card-element" ref={cardElementRef}></div>
-        return <div id="gp-card-element"></div>;
+
+    return <div id="apple-pay-card-element" ref={cardElementRef}></div>;
 };
 
 // const MyFatoorahGooglePay = () => {
 //     const { orderId, wixTransactionId, amount } = useQueryParams();
-//     const cardElementRefGP = useRef(null);
+//     const cardElementRef = useRef(null);
 //
 //     useEffect(() => {
 //         const fetchSessionIdAndSetup = async () => {
@@ -284,13 +263,28 @@ const MyFatoorahApplePay = () => {
 //                 const sessionId = response.data.SessionId;
 //                 const countryCode = response.data.CountryCode;
 //
-//                 if(window.myFatoorahGP && !cardElementRefGP.current.hasChildNodes()) {
-//
-//                     const config1 = {
+//                 if(window.myFatoorahGP && !cardElementRef.current.hasChildNodes()) {
+//                     const config = {
 //                         sessionId: sessionId,
 //                         countryCode: countryCode,
 //                         currencyCode: "AED",
 //                         amount: (3.67 * formatAmount(amount)),
+//                         cardViewId: "apple-pay-card-element",
+//                         callback: payment,
+//                         style: {
+//                             frameHeight: 51,
+//                             button: {
+//                                 height: "35px",
+//                                 type: "Pay",
+//                                 borderRadius: "8px"
+//                             }
+//                         }
+//                     };
+//                     var config = {
+//                         sessionId: "", // Here you add the "SessionId" you receive from the InitiateSession Endpoint.
+//                         amount: "10", // Add the invoice amount.
+//                         currencyCode: "KWD", // Here, add your currency code.
+//                         countryCode: "KWT", // Here, add your country code.
 //                         cardViewId: "gp-card-element",
 //                         callback: payment,
 //                         style: {
@@ -304,8 +298,10 @@ const MyFatoorahApplePay = () => {
 //                             }
 //                         }
 //                     };
+//                     console.log(config);
 //
-//                     window.myFatoorahGP.init(config1);
+//                     window.myFatoorahAP.init(config);
+//                     console.log(myFatoorahAP);
 //                 }
 //
 //             } catch (error) {
@@ -337,7 +333,7 @@ const MyFatoorahApplePay = () => {
 //         });
 //     };
 //
-//     return <div id="gp-card-element" ref={cardElementRefGP}></div>;
+//     return <div id="apple-pay-card-element" ref={cardElementRef}></div>;
 // };
 
 const PaymentDetails = () => {
