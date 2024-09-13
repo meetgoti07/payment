@@ -248,8 +248,8 @@ const MyFatoorahApplePay = () => {
 
 const MyFatoorahGooglePay = () => {
     const { orderId, wixTransactionId, amount } = useQueryParams();
-    const cardElementRef = useRef(null);
-
+    const cardElementRefGP = useRef(null);
+    console.log('Gpay Start');
     useEffect(() => {
         const fetchSessionIdAndSetup = async () => {
             try {
@@ -263,7 +263,9 @@ const MyFatoorahGooglePay = () => {
                 const sessionId = response.data.SessionId;
                 const countryCode = response.data.CountryCode;
 
-                if(window.myFatoorahGP && !cardElementRef.current.hasChildNodes()) {
+                console.log(sessionId,countryCode);
+
+                if(window.myFatoorahGP && !cardElementRefGP.current.hasChildNodes()) {
                     const config = {
                         sessionId: sessionId,
                         countryCode: countryCode,
@@ -282,8 +284,10 @@ const MyFatoorahGooglePay = () => {
                             }
                         }
                     };
+                    console.log(config);
 
                     window.myFatoorahGP.init(config);
+                    console.log(myFatoorahGP);
                 }
 
             } catch (error) {
@@ -315,7 +319,7 @@ const MyFatoorahGooglePay = () => {
         });
     };
 
-    return <div id="gp-card-element" ref={cardElementRef}></div>;
+    return <div id="gp-card-element" ref={cardElementRefGP}></div>;
 };
 
 const PaymentDetails = () => {
