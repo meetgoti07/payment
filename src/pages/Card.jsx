@@ -226,7 +226,7 @@ const MyFatoorahApplePay = () => {
         // Process the payment response
         const sessionId = response.sessionId;
         // Send session ID and other details to your backend for further processing
-        axios.post(`${import.meta.env.VITE_BACKEND}/execute-payment`, {
+        axios.post(`${import.meta.env.VITE_BACKEND}/execute-apple-payment`, {
             sessionId,
             orderId,
             wixTransactionId,
