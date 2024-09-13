@@ -325,7 +325,7 @@ const PaymentDetails = () => {
 
     return (
         <div className="p-6 md:p-6 bg-white shadow-md flex flex-col items-center ">
-            <MyFatoorahApplePay />
+            {/*<MyFatoorahApplePay />*/}
             <MyFatoorahGooglePay />
             <div className="relative mb-4 w-[25rem]">
                 <div className="absolute inset-0 flex items-center">
