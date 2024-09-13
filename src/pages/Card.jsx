@@ -173,102 +173,11 @@ const initPayment = async (orderId, wixTransactionId,amount) => {
     }
 };
 
-const MyFatoorahApplePay = () => {
-    const { orderId, wixTransactionId, amount, url } = useQueryParams();
-    Cookies.set('ref', url);
-    const cardElementRef = useRef(null);
-
-    useEffect(() => {
-        const fetchSessionIdAndSetup = async () => {
-            try {
-                // Fetch the session ID and other details from your backend
-                const response = await axios.post(`${import.meta.env.VITE_BACKEND}/create-session`, {}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                const sessionId = response.data.SessionId;
-                const countryCode = response.data.CountryCode;
-
-                if(window.myFatoorahAP && !cardElementRef.current.hasChildNodes()) {
-                    const config = {
-                        sessionId: sessionId,
-                        countryCode: countryCode,
-                        currencyCode: "AED",
-                        amount: (3.67 * formatAmount(amount)),
-                        cardViewId: "apple-pay-card-element",
-                        callback: payment,
-                        style: {
-                            frameHeight: 51,
-                            button: {
-                                height: "35px",
-                                type: "Pay",
-                                borderRadius: "8px"
-                            }
-                        }
-                    };
-                    const config1 = {
-                        sessionId: sessionId,
-                        countryCode: countryCode,
-                        currencyCode: "AED",
-                        amount: (3.67 * formatAmount(amount)),
-                        cardViewId: "gp-card-element",
-                        callback: payment,
-                        style: {
-                            frameHeight: 51,
-                            button: {
-                                height: "40px",
-                                text: "pay", // Accepted texts: ["book", "buy", "checkout", "donate", "order", "pay", "plain", "subscribe"]
-                                borderRadius: "8px",
-                                color: "black", // Accepted colors: ["black", "white", "default"]
-                                language: "en"
-                            }
-                        }
-                    };
-                    console.log(config);
-
-                    window.myFatoorahAP.init(config);
-                    window.myFatoorahGP.init(config1);
-                    console.log(myFatoorahAP);
-                }
-
-            } catch (error) {
-                console.error('Error fetching session ID:', error.message);
-            }
-        };
-
-        fetchSessionIdAndSetup();
-    }, [amount]);
-
-    const payment = (response) => {
-        // Process the payment response
-        const sessionId = response.sessionId;
-        // Send session ID and other details to your backend for further processing
-        axios.post(`${import.meta.env.VITE_BACKEND}/execute-apple-payment`, {
-            sessionId,
-            orderId,
-            wixTransactionId,
-            amount
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }).then((paymentResponse) => {
-            // Handle the redirection or display a success message
-            window.location.href = paymentResponse.data?.Data?.PaymentURL;
-        }).catch(error => {
-            console.error('Payment submission error:', error);
-        });
-    };
-
-    return <div id="apple-pay-card-element" ref={cardElementRef}></div>;
-};
-
-// const MyFatoorahGooglePay = () => {
-//     const { orderId, wixTransactionId, amount } = useQueryParams();
-//     // const cardElementRefGP = useRef(null);
-//     console.log('Gpay Start');
+// const MyFatoorahApplePay = () => {
+//     const { orderId, wixTransactionId, amount, url } = useQueryParams();
+//     Cookies.set('ref', url);
+//     const cardElementRef = useRef(null);
+//
 //     useEffect(() => {
 //         const fetchSessionIdAndSetup = async () => {
 //             try {
@@ -282,30 +191,28 @@ const MyFatoorahApplePay = () => {
 //                 const sessionId = response.data.SessionId;
 //                 const countryCode = response.data.CountryCode;
 //
-//                 console.log(sessionId,countryCode);
-//
+//                 if(window.myFatoorahAP && !cardElementRef.current.hasChildNodes()) {
 //                     const config = {
 //                         sessionId: sessionId,
 //                         countryCode: countryCode,
 //                         currencyCode: "AED",
 //                         amount: (3.67 * formatAmount(amount)),
-//                         cardViewId: "gp-card-element",
+//                         cardViewId: "apple-pay-card-element",
 //                         callback: payment,
 //                         style: {
 //                             frameHeight: 51,
 //                             button: {
-//                                 height: "40px",
-//                                 text: "pay", // Accepted texts: ["book", "buy", "checkout", "donate", "order", "pay", "plain", "subscribe"]
-//                                 borderRadius: "8px",
-//                                 color: "black", // Accepted colors: ["black", "white", "default"]
-//                                 language: "en"
+//                                 height: "35px",
+//                                 type: "Pay",
+//                                 borderRadius: "8px"
 //                             }
 //                         }
 //                     };
 //                     console.log(config);
 //
-//                     window.myFatoorahGP.init(config);
-//                     console.log(myFatoorahGP);
+//                     window.myFatoorahAP.init(config);
+//                     console.log(myFatoorahAP);
+//                 }
 //
 //             } catch (error) {
 //                 console.error('Error fetching session ID:', error.message);
@@ -336,8 +243,82 @@ const MyFatoorahApplePay = () => {
 //         });
 //     };
 //
-//     return <div id="gp-card-element"></div>;
+//     return <div id="apple-pay-card-element" ref={cardElementRef}></div>;
 // };
+
+const MyFatoorahGooglePay = () => {
+    const { orderId, wixTransactionId, amount } = useQueryParams();
+    // const cardElementRefGP = useRef(null);
+    console.log('Gpay Start');
+    useEffect(() => {
+        const fetchSessionIdAndSetup = async () => {
+            try {
+                // Fetch the session ID and other details from your backend
+                const response = await axios.post(`${import.meta.env.VITE_BACKEND}/create-session`, {}, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const sessionId = response.data.SessionId;
+                const countryCode = response.data.CountryCode;
+
+                console.log(sessionId,countryCode);
+
+                    const config = {
+                        sessionId: sessionId,
+                        countryCode: countryCode,
+                        currencyCode: "AED",
+                        amount: (3.67 * formatAmount(amount)),
+                        cardViewId: "gp-card-element",
+                        callback: payment,
+                        style: {
+                            frameHeight: 51,
+                            button: {
+                                height: "40px",
+                                text: "pay", // Accepted texts: ["book", "buy", "checkout", "donate", "order", "pay", "plain", "subscribe"]
+                                borderRadius: "8px",
+                                color: "black", // Accepted colors: ["black", "white", "default"]
+                                language: "en"
+                            }
+                        }
+                    };
+                    console.log(config);
+
+                    myFatoorahGP.init(config);
+                    console.log(myFatoorahGP);
+
+            } catch (error) {
+                console.error('Error fetching session ID:', error.message);
+            }
+        };
+
+        fetchSessionIdAndSetup();
+    }, [amount]);
+
+    const payment = (response) => {
+        // Process the payment response
+        const sessionId = response.sessionId;
+        // Send session ID and other details to your backend for further processing
+        axios.post(`${import.meta.env.VITE_BACKEND}/execute-apple-payment`, {
+            sessionId,
+            orderId,
+            wixTransactionId,
+            amount
+        }, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then((paymentResponse) => {
+            // Handle the redirection or display a success message
+            window.location.href = paymentResponse.data?.Data?.PaymentURL;
+        }).catch(error => {
+            console.error('Payment submission error:', error);
+        });
+    };
+
+    return <div id="gp-card-element"></div>;
+};
 
 const PaymentDetails = () => {
     const { orderId, wixTransactionId, amount } = useQueryParams();
@@ -345,7 +326,7 @@ const PaymentDetails = () => {
     return (
         <div className="p-6 md:p-6 bg-white shadow-md flex flex-col items-center ">
             <MyFatoorahApplePay />
-            {/*<MyFatoorahGooglePay />*/}
+            <MyFatoorahGooglePay />
             <div className="relative mb-4 w-[25rem]">
                 <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-300"></div>
