@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/getbknht/public_html/  # Set the path to public_html
+    - /bin/cp -R dist/* $DEPLOYPATH                 # Copy the contents of the dist folder to public_html
