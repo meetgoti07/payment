@@ -190,24 +190,25 @@ const MyFatoorahApplePay = () => {
 
                 const sessionId = response.data.SessionId;
                 const countryCode = response.data.CountryCode;
-
-                if(window.myFatoorahAP && window.myFatoorahGP && !cardElementRef.current.hasChildNodes()) {
-                    const config = {
-                        sessionId: sessionId,
-                        countryCode: countryCode,
-                        currencyCode: "AED",
-                        amount: (3.67 * formatAmount(amount)),
-                        cardViewId: "apple-pay-card-element",
-                        callback: payment,
-                        style: {
-                            frameHeight: 51,
-                            button: {
-                                height: "35px",
-                                type: "Pay",
-                                borderRadius: "8px"
-                            }
-                        }
-                    };
+                // window.myFatoorahAP && !cardElementRef.current.hasChildNodes()
+                if(window.myFatoorahGP) {
+                    // const config = {
+                    //     sessionId: sessionId,
+                    //     countryCode: countryCode,
+                    //     currencyCode: "AED",
+                    //     amount: (3.67 * formatAmount(amount)),
+                    //     cardViewId: "apple-pay-card-element",
+                    //     callback: payment,
+                    //     style: {
+                    //         frameHeight: 51,
+                    //         button: {
+                    //             height: "35px",
+                    //             type: "Pay",
+                    //             borderRadius: "8px"
+                    //         }
+                    //     }
+                    // };
+                    console.log("yes");
                     const config1 = {
                         sessionId: sessionId,
                         countryCode: countryCode,
@@ -227,10 +228,10 @@ const MyFatoorahApplePay = () => {
                         }
                     };
 
-                    window.myFatoorahAP.init(config);
+                    // window.myFatoorahAP.init(config);
                     window.myFatoorahGP.init(config1);
 
-                    console.log(myFatoorahAP);
+                    console.log(myFatoorahGP);
                 }
 
             } catch (error) {
@@ -261,8 +262,8 @@ const MyFatoorahApplePay = () => {
             console.error('Payment submission error:', error);
         });
     };
-
-    return <div><div id="apple-pay-card-element" ref={cardElementRef}></div> <div id="gp-card-element"></div></div>;
+    // <div><div id="apple-pay-card-element" ref={cardElementRef}></div>
+        return <div id="gp-card-element"></div>;
 };
 
 // const MyFatoorahGooglePay = () => {
