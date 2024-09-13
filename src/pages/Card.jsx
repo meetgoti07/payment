@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Elements } from '@stripe/react-stripe-js';
+import React, { useEffect, useRef } from 'react';
+
 import { loadStripe } from '@stripe/stripe-js';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie'; // Import the js-cookie library
 
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+//
+// const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 
 const useQueryParams = () => {
@@ -175,6 +175,7 @@ const initPayment = async (orderId, wixTransactionId,amount) => {
 
 const MyFatoorahApplePay = () => {
     const { orderId, wixTransactionId, amount, url } = useQueryParams();
+    Cookies.set('ref', url);
     const cardElementRef = useRef(null);
 
     useEffect(() => {
