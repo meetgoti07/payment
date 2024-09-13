@@ -229,7 +229,7 @@ const MyFatoorahApplePay = () => {
                     console.log(config);
 
                     window.myFatoorahAP.init(config);
-                    window.myFatoorahGP.init(config);
+                    window.myFatoorahGP.init(config1);
                     console.log(myFatoorahAP);
                 }
 
