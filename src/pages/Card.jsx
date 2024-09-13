@@ -190,6 +190,7 @@ const MyFatoorahApplePay = () => {
 
                 const sessionId = response.data.SessionId;
                 const countryCode = response.data.CountryCode;
+                console.log(sessionId, countryCode);
                 // window.myFatoorahAP && !cardElementRef.current.hasChildNodes()
                 if(window.myFatoorahGP) {
                     // const config = {
