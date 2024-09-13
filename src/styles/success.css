@@ -1,0 +1,45 @@
+.success-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f8ff;
+    text-align: center;
+}
+
+.success-message {
+    border: 1px solid #d4d4d4;
+    padding: 2rem;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.checkmark-icon {
+    color: #4caf50;
+    font-size: 5rem;
+}
+
+.success-message h1 {
+    color: #4caf50;
+    font-size: 1.2rem;
+}
+
+.success-message p {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+}
+
+.home-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.5rem 1rem;
+    color: #ffffff;
+    background-color: #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.home-link:hover {
+    background-color: #0056b3;
+}
