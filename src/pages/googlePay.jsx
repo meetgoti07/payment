@@ -23,7 +23,7 @@ export const MyFatoorahGooglePay = () => {
                     const config = {
                         sessionId: sessionId,
                         countryCode: countryCode,
-                        currencyCode: "ARE",
+                        currencyCode: "USD",
                         amount: (formatAmount(amount)),
                         cardViewId: "google-pay-card-element",
                         callback: payment

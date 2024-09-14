@@ -20,7 +20,7 @@ const Failed = () => {
                     <p className="text-6xl">❌</p>
                 </div>
                 <h1>Failed</h1>
-                <p>Payment Failed!</p>
+                <p>“Your card was declined. Try using Apple Pay or Google Pay. If you are still experiencing issues, please contact support via the chat widget.</p>
             </div>
         </div>
     );
