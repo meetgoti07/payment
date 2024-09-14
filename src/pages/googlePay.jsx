@@ -34,8 +34,7 @@ export const MyFatoorahGooglePay = () => {
                                 text: "pay", // Accepted texts: ["book", "buy", "checkout", "donate", "order", "pay", "plain", "subscribe"]
                                 borderRadius: "8px",
                                 color: "black", // Accepted colors: ["black", "white", "default"]
-                                language: "en",
-                                textSizeAdjust: "14px"
+                                language: "en"
                             }
                         }
                     };
