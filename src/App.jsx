@@ -2,7 +2,6 @@ import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import Card from "./pages/Card.jsx";
 import Success from "./pages/Success.jsx";
 import Failed from "./pages/Failed.jsx";
-import SuccessStripe from "./pages/SuccessStripe.jsx";
 import { useEffect } from "react";
 
 function App() {
@@ -26,7 +25,6 @@ function App() {
                 <Route path="/" element={<div>403 Unauthorised</div>} />
                 <Route path="/pay" element={<Card />} />
                 <Route path="/success" element={<Success />} />
-                <Route path="/success-stripe" element={<SuccessStripe />} />
                 <Route path="/failure" element={<Failed />} />
             </Routes>
         </Router>
