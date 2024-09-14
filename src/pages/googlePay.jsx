@@ -23,8 +23,8 @@ export const MyFatoorahGooglePay = () => {
                     const config = {
                         sessionId: sessionId,
                         countryCode: countryCode,
-                        currencyCode: "USD",
-                        amount: (formatAmount(amount)),
+                        currencyCode: "AED",
+                        amount: `${parseFloat((3.67*(formatAmount(amount))).toFixed(2))}`,
                         cardViewId: "google-pay-card-element",
                         callback: payment,
                         style: {
@@ -68,7 +68,7 @@ export const MyFatoorahGooglePay = () => {
             sessionId,
             orderId,
             wixTransactionId,
-            amount
+            amount: `${parseFloat((3.67*(formatAmount(amount))).toFixed(2))}`
         }, {
             headers: {
                 'Content-Type': 'application/json',
