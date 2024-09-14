@@ -23,10 +23,21 @@ export const MyFatoorahGooglePay = () => {
                     const config = {
                         sessionId: sessionId,
                         countryCode: countryCode,
-                        currencyCode: "USD",
+                        currencyCode: "AED",
                         amount: (formatAmount(amount)),
                         cardViewId: "google-pay-card-element",
-                        callback: payment
+                        callback: payment,
+                        style: {
+                            frameHeight: 51,
+                            button: {
+                                height: "40px",
+                                text: "pay", // Accepted texts: ["book", "buy", "checkout", "donate", "order", "pay", "plain", "subscribe"]
+                                borderRadius: "8px",
+                                color: "black", // Accepted colors: ["black", "white", "default"]
+                                language: "en",
+                                textSizeAdjust: "14px"
+                            }
+                        }
                     };
 
 
@@ -34,6 +45,7 @@ export const MyFatoorahGooglePay = () => {
 
                     if (window.myFatoorahGP && window.myFatoorahGP.init) {
                         window.myFatoorahGP.init(config);
+                        console.log(myFatoorahGP);
                     } else {
                         console.error("myFatoorahGP is not defined or not loaded.");
                     }

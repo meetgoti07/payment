@@ -5,7 +5,6 @@ import Cookies from 'js-cookie';
 import {MyFatoorahGooglePay} from "./googlePay.jsx"; // Import the js-cookie library
 
 
-
 export const useQueryParams = () => {
     const [searchParams] = useSearchParams();
     return {
