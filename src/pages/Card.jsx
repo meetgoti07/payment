@@ -94,6 +94,7 @@ const MyFatoorahApplePay = () => {
     const cardElementRef = useRef(null);
 
     useEffect(() => {
+        console.log('Apple Pay response:', (3.67*(amount/100)).toString().slice(0, -2));
         const fetchSessionId = async () => {
             try {
                 // Fetch the session ID and other details from your backend
@@ -143,7 +144,7 @@ const MyFatoorahApplePay = () => {
             sessionId,
             orderId,
             wixTransactionId,
-            amount
+            amount: (3.67*(amount/100)).toString().slice(0, -2)
         }, {
             headers: {
                 'Content-Type': 'application/json',
