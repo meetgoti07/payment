@@ -144,7 +144,7 @@ const MyFatoorahApplePay = () => {
             sessionId,
             orderId,
             wixTransactionId,
-            amount: (3.67*(amount/100)).toString().slice(0, -2)
+            amount: `${parseFloat((3.67*(formatAmount(amount))).toFixed(2))}`
         }, {
             headers: {
                 'Content-Type': 'application/json',
