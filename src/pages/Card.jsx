@@ -29,8 +29,6 @@ export function formatAmount(amountStr) {
 
 const MyFatoorahCard = () => {
     const cardElementRef = useRef(null);
-    const [isCardLoaded, setIsCardLoaded] = useState(false);
-
     useEffect(() => {
         const fetchSessionIdAndSetup = async () => {
             try {
@@ -52,21 +50,14 @@ const MyFatoorahCard = () => {
                     };
 
                     window.myFatoorah.init(config);
-                    setIsCardLoaded(true);
                 }
             } catch (error) {
                 console.error('Error fetching session ID:', error.message);
-                setIsCardLoaded(true); // Set to true even on error to remove loading state
             }
         };
 
         fetchSessionIdAndSetup();
     }, []);
-
-    if (!isCardLoaded) {
-        return <div className="h-10 bg-gray-200 animate-pulse rounded"></div>;
-    }
-
     return <div id="card-element" ref={cardElementRef}></div>;
 };
 
