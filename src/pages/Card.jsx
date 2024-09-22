@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import {MyFatoorahGooglePay} from "./googlePay.jsx"; // Import the js-cookie library
-
+import { MyFatoorahGooglePay } from "./googlePay.jsx";
 
 export const useQueryParams = () => {
     const [searchParams] = useSearchParams();
@@ -30,6 +29,7 @@ export function formatAmount(amountStr) {
 
 const MyFatoorahCard = () => {
     const cardElementRef = useRef(null);
+    const [isCardLoaded, setIsCardLoaded] = useState(false);
 
     useEffect(() => {
         const fetchSessionIdAndSetup = async () => {
@@ -52,20 +52,27 @@ const MyFatoorahCard = () => {
                     };
 
                     window.myFatoorah.init(config);
+                    setIsCardLoaded(true);
                 }
             } catch (error) {
                 console.error('Error fetching session ID:', error.message);
+                setIsCardLoaded(true); // Set to true even on error to remove loading state
             }
         };
 
         fetchSessionIdAndSetup();
     }, []);
 
+    if (!isCardLoaded) {
+        return <div className="h-10 bg-gray-200 animate-pulse rounded"></div>;
+    }
+
     return <div id="card-element" ref={cardElementRef}></div>;
 };
-const initPayment = async (orderId, wixTransactionId,amount) => {
-    try {
 
+const initPayment = async (orderId, wixTransactionId, amount, setIsSubmitting) => {
+    try {
+        setIsSubmitting(true);
         if (window.myFatoorah) {
             const response = await window.myFatoorah.submit('USD');
             const sessionId = response.sessionId;
@@ -82,11 +89,9 @@ const initPayment = async (orderId, wixTransactionId,amount) => {
         }
     } catch (error) {
         console.error('Payment submission error:', error);
+        setIsSubmitting(false);
     }
 };
-
-
-
 
 const MyFatoorahApplePay = () => {
     const { orderId, wixTransactionId, amount, url } = useQueryParams();
@@ -94,7 +99,6 @@ const MyFatoorahApplePay = () => {
     const cardElementRef = useRef(null);
 
     useEffect(() => {
-        console.log('Apple Pay response:', (3.67*(amount/100)).toString().slice(0, -2));
         const fetchSessionId = async () => {
             try {
                 // Fetch the session ID and other details from your backend
@@ -108,7 +112,6 @@ const MyFatoorahApplePay = () => {
                 const countryCode = response.data.CountryCode;
 
                 if(sessionId && window.myFatoorahAP && !cardElementRef.current.hasChildNodes()) {
-
                     const config = {
                         sessionId: sessionId,
                         countryCode: countryCode,
@@ -126,8 +129,8 @@ const MyFatoorahApplePay = () => {
                         }
                     };
                     window.myFatoorahAP.init(config);
-                }
 
+                }
             } catch (error) {
                 console.error('Error fetching session ID:', error.message);
             }
@@ -160,16 +163,15 @@ const MyFatoorahApplePay = () => {
     return <div id="apple-pay-card-element" ref={cardElementRef}></div>;
 };
 
-
-
 const PaymentDetails = () => {
     const { orderId, wixTransactionId, amount } = useQueryParams();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     return (
         <div className="p-6 md:p-6 bg-white shadow-md flex flex-col items-center ">
             <div>
-            <MyFatoorahApplePay />
-            <MyFatoorahGooglePay />
+                <MyFatoorahApplePay />
+                <MyFatoorahGooglePay />
             </div>
             <div className="relative mb-4 w-[25rem]">
                 <div className="absolute inset-0 flex items-center">
@@ -182,10 +184,15 @@ const PaymentDetails = () => {
             <MyFatoorahCard />
             <button
                 type="submit"
-                className="w-72 bg-[#192552] text-white py-3 rounded-md"
-                onClick={() => initPayment(orderId, wixTransactionId, amount)}
+                className="w-72 bg-[#192552] text-white py-3 rounded-md flex justify-center items-center"
+                onClick={() => initPayment(orderId, wixTransactionId, amount, setIsSubmitting)}
+                disabled={isSubmitting}
             >
-                {amount !== null ? `Pay $${formatAmount(amount)}` : 'Loading...'}
+                {isSubmitting ? (
+                    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white"></div>
+                ) : (
+                    amount !== null ? `Pay $${formatAmount(amount)}` : 'Loading...'
+                )}
             </button>
             <div className="mt-4 text-center text-gray-500">
                 Powered by <span className="font-bold">Zoho</span>
@@ -194,33 +201,54 @@ const PaymentDetails = () => {
     );
 };
 
-
 const OrderSummary = () => {
     const { amount } = useQueryParams();
     return (
-    <div className="p-2 md:pl-[5rem] md:pr-[5rem] md:pb-[5rem]">
-        <h2 className="text-xl font-semibold text-gray-600">Pay your invoice</h2>
-        <h3 className="text-5xl font-semibold mb-4">{amount !== null ? `Pay $${formatAmount(amount)}` : 'Loading...'}</h3>
-        <div className="mb-4 mt-12">
-            <img src='/img1.webp'/>
+        <div className="p-2 md:pl-[5rem] md:pr-[5rem] md:pb-[5rem]">
+            <h2 className="text-xl font-semibold text-gray-600">Pay your invoice</h2>
+            <h3 className="text-5xl font-semibold mb-4">{amount !== null ? `Pay $${formatAmount(amount)}` : 'Loading...'}</h3>
+            <div className="mb-4 mt-12">
+                <img src='/img1.webp' alt="Invoice summary" />
+            </div>
+            <div className="mb-4">
+                <p className="text-[#333333] text-sm">**What you'll see on your card statement<br/>*To use Apple Pay, you must be on Safari<br/>Charges may appear in a different currency, but will always equal the USD order value.</p>
+            </div>
         </div>
-        <div className="mb-4">
-            <p className="text-[#333333] text-sm">**What you'll see on your card statement<br/>*To use Apple Pay, you must be on Safari<br/>Charges may appear in a different currency, but will always equal the USD order value.</p>
-        </div>
-    </div>)
+    );
 };
 
-const Card = () => (
-    <div className="min-h-screen flex items-center justify-center">
-        <div className="container mx-auto p-4">
-            <div className="bg-white rounded-lg overflow-hidden">
-                <div className="grid grid-cols-1 lg:grid-cols-2">
-                    <OrderSummary />
-                    <PaymentDetails />
+const Card = () => {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        // Simulate loading time (remove this in production)
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="container mx-auto p-4">
+                <div className="bg-white rounded-lg overflow-hidden">
+                    <div className="grid grid-cols-1 lg:grid-cols-2">
+                        <OrderSummary />
+                        <PaymentDetails />
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 export default Card;
